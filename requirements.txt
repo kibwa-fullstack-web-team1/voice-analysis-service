@@ -1,0 +1,11 @@
+fastapi
+uvicorn[standard]
+boto3
+httpx
+
+# 음성 처리 및 머신러닝
+librosa
+xgboost
+scikit-learn
+numpy
+pandas
