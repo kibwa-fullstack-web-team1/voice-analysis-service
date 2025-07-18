@@ -1,0 +1,13 @@
+INFO:     Started server process [13067]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://0.0.0.0:8003 (Press CTRL+C to quit)
+VoiceAnalysisService initialized for external communications.
+Downloading voice from s3://kibwa-17/voice_answers/1_1_120b4a00.mp3...
+S3 download failed: Unable to locate credentials
+Error in analysis pipeline for s3://kibwa-17/voice_answers/1_1_120b4a00.mp3: S3_DOWNLOAD_FAILED: Unable to locate credentials
+INFO:     127.0.0.1:36866 - "POST /api/analyze HTTP/1.1" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [13067]
