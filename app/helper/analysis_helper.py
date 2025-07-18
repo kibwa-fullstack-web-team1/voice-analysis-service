@@ -19,7 +19,8 @@ def preprocess_audio_to_spectrogram(audio_bytes_io):
     img_array = np.stack([img_array] * 3, axis=-1)
     img_array_resized = resize(img_array, (IMG_WIDTH, IMG_HEIGHT), anti_aliasing=True)
     
-    return np.expand_dims(img_array_resized, axis=0).tolist()
+    processed_spectrogram = np.expand_dims(img_array_resized, axis=0).tolist()
+    return {"inputs": {"keras_tensor": processed_spectrogram}}
 
 def calculate_cognitive_score(predictions):
     """
