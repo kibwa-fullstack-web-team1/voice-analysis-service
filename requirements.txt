@@ -1,0 +1,16 @@
+fastapi
+uvicorn[standard]
+boto3
+httpx
+python-dotenv
+
+# 음성 처리 및 머신러닝
+librosa
+xgboost
+scikit-learn
+numpy
+pandas
+
+# 딥러닝 및 이미지 처리
+tensorflow
+scikit-image
