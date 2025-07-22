@@ -26,8 +26,10 @@ class VoiceAnalysisService:
         """
         print(f"Downloading voice from {s3_url}...")
         try:
-            bucket_name = s3_url.split('//')[1].split('/')[0]
-            key = '/'.join(s3_url.split('//')[1].split('/')[1:])
+            from urllib.parse import urlparse
+            parsed_url = urlparse(s3_url)
+            bucket_name = parsed_url.hostname.split('.')[0] # 호스트 이름에서 버킷 이름 추출
+            key = parsed_url.path.lstrip('/') # 경로에서 선행 슬래시 제거
             
             audio_bytes_io = io.BytesIO()
             self.s3.download_fileobj(bucket_name, key, audio_bytes_io)
@@ -39,19 +41,19 @@ class VoiceAnalysisService:
             print(f"S3 download failed: {e}")
             raise RuntimeError(f"S3_DOWNLOAD_FAILED: {e}")
 
-    def get_prediction_from_tf_serving(self, instances: list) -> list:
+    def get_prediction_from_tf_serving(self, json_payload: dict) -> list:
         """
         전처리된 데이터를 TensorFlow Serving에 보내고 예측 결과를 받습니다.
         """
         print(f"Requesting prediction from TensorFlow Serving: {TF_SERVING_URL}")
         try:
             headers = {"content-type": "application/json"}
-            json_request = {"instances": instances}
+            json_request = json_payload
             
-            response = httpx.post(TF_SERVING_URL, headers=headers, json=json_request, timeout=30.0)
+            response = httpx.post(TF_SERVING_URL, headers=headers, json=json_request, timeout=60.0)
             response.raise_for_status()
             
-            predictions = response.json()["predictions"][0]
+            predictions = response.json()["outputs"][0]
             print("Successfully received prediction.")
             return predictions
         except httpx.RequestError as e:
